@@ -1,0 +1,65 @@
+package com.mediscreen.webapp.service;
+
+import com.mediscreen.webapp.model.MediScreenPatient;
+import com.mediscreen.webapp.proxy.PatientApiProxy;
+import org.junit.Assert;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.Collections;
+import java.util.List;
+
+@SpringBootTest
+public class PatientServiceTests {
+
+    @Mock
+    private PatientApiProxy patientApiProxyMock;
+
+    @InjectMocks
+    private PatientServiceImpl patientService;
+
+    private static final MediScreenPatient patient = new MediScreenPatient();
+
+    @BeforeAll
+    public static void setUp(){
+        patient.setId(1);
+        patient.setFirstName("firstName");
+        patient.setLastName("lastName");
+        patient.setBirthDate(Timestamp.valueOf(LocalDateTime.of(2021, Month.NOVEMBER, 15, 10,30)));
+        patient.setGender("X");
+        patient.setAddress("address");
+        patient.setPhone("phone");
+    }
+
+    @Test
+    public void getAllPatientsTest(){
+        Mockito.when(patientApiProxyMock.getAll()).thenReturn(new ResponseEntity<>(Collections.singletonList(patient), HttpStatus.OK));
+
+        List<MediScreenPatient> resultList = patientService.getAllPatients();
+
+        Assert.assertEquals(1,resultList.size());
+        Assert.assertEquals(patient.getId(), resultList.get(0).getId());
+    }
+
+    @Test
+    public void findPatientTest(){
+        Mockito.when(patientApiProxyMock.findPatient(1)).thenReturn(new ResponseEntity<>(patient, HttpStatus.OK));
+
+        Assert.assertEquals(patient.getId(), patientService.findPatient(1).getId());
+    }
+    @Test
+    public void findPatientNotFoundTest(){
+        Mockito.when(patientApiProxyMock.findPatient(1)).thenReturn(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+        Assert.assertNull(patientService.findPatient(1));
+    }
+}

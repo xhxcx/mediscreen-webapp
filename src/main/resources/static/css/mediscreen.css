@@ -1,0 +1,25 @@
+:root{
+    --medi-blue-color : #00849a;
+}
+.text-align-end{
+    text-align: end;
+}
+.medi-theme{
+    background-color: var(--medi-blue-color);
+    border-color: var(--medi-blue-color);
+    color:white;
+}
+.medi-text{
+    color: var(--medi-blue-color);
+}
+
+.medi-table {
+    border : black 2px solid;
+}
+.medi-table tr{
+    line-height: 5rem;
+}
+
+.error{
+    color: red;
+}
