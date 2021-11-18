@@ -1,19 +1,19 @@
 package com.mediscreen.webapp.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Data
 public class MediScreenPatient {
 
-    private int id;
+    private Integer id;
     private String firstName;
     private String lastName;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Timestamp birthDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate birthDate;
     private String gender;
     private String address;
     private String phone;

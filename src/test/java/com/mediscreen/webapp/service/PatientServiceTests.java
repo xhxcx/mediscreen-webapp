@@ -12,9 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.Month;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class PatientServiceTests {
         patient.setId(1);
         patient.setFirstName("firstName");
         patient.setLastName("lastName");
-        patient.setBirthDate(Timestamp.valueOf(LocalDateTime.of(2021, Month.NOVEMBER, 15, 10,30)));
+        patient.setBirthDate(LocalDate.of(2021, 11, 15));
         patient.setGender("X");
         patient.setAddress("address");
         patient.setPhone("phone");
