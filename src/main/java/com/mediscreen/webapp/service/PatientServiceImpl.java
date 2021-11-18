@@ -3,6 +3,7 @@ package com.mediscreen.webapp.service;
 import com.mediscreen.webapp.model.MediScreenPatient;
 import com.mediscreen.webapp.proxy.PatientApiProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,19 @@ public class PatientServiceImpl implements PatientService {
             }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public MediScreenPatient createPatient(MediScreenPatient patient) {
+        try {
+            ResponseEntity<MediScreenPatient> response = patientApiProxy.createPatient(patient);
+            if (response.getStatusCode() == HttpStatus.CREATED) {
+                return response.getBody();
+            }
+        } catch (Exception apiException) {
+            System.out.println(apiException.getMessage());
         }
         return null;
     }

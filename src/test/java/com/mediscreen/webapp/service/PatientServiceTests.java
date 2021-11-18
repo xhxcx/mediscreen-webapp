@@ -60,4 +60,32 @@ public class PatientServiceTests {
 
         Assert.assertNull(patientService.findPatient(1));
     }
+
+    @Test
+    public void createPatientTest(){
+        MediScreenPatient apiReturnPatient = new MediScreenPatient();
+        apiReturnPatient.setId(1);
+        apiReturnPatient.setFirstName("firstName");
+        apiReturnPatient.setLastName("lastName");
+        apiReturnPatient.setBirthDate(LocalDate.of(2021, 11, 15));
+        apiReturnPatient.setGender("X");
+        apiReturnPatient.setAddress("address");
+        apiReturnPatient.setPhone("phone");
+
+        patient.setId(null);
+
+        Mockito.when(patientApiProxyMock.createPatient(patient)).thenReturn(new ResponseEntity<>(apiReturnPatient, HttpStatus.CREATED));
+
+        MediScreenPatient result = patientService.createPatient(patient);
+        Assert.assertEquals(apiReturnPatient.getId(), result.getId());
+    }
+
+    @Test
+    public void createPatientFailTest(){
+        patient.setId(null);
+        Mockito.when(patientApiProxyMock.createPatient(patient)).thenReturn(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+
+        MediScreenPatient result = patientService.createPatient(patient);
+        Assert.assertNull(result);
+    }
 }

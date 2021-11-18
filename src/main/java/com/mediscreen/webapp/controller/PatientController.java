@@ -8,8 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.time.LocalDateTime;
 
 @Controller
 public class PatientController {
@@ -43,5 +47,26 @@ public class PatientController {
         }
         model.addAttribute("patient", patientService.findPatient(id));
         return "patientInformations";
+    }
+
+    @GetMapping("/addPatient")
+    public String createPatient(Model model) {
+        LOGGER.info("GET /addPatient");
+        LocalDateTime now = LocalDateTime.now();
+        String today = now.getYear() + "-" + now.getMonthValue() + "-" + now.getDayOfMonth();
+        model.addAttribute("today", today);
+        model.addAttribute("newPatient", new MediScreenPatient());
+        return "addPatientForm";
+    }
+
+    @PostMapping("/addPatient")
+    public String validatePatientCreation(@ModelAttribute("newPatient") MediScreenPatient patient, RedirectAttributes redirectAttributes, Model model) {
+        LOGGER.info("POST /addPatient patient: " + patient.toString());
+        if (patientService.createPatient(patient) != null) {
+            redirectAttributes.addFlashAttribute("showSuccessAddMessage", true);
+            return "redirect:/patients";
+        }
+        model.addAttribute("errorMessage", "Patient not created, please verify informations and try again");
+        return "addPatientForm";
     }
 }

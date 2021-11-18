@@ -19,6 +19,14 @@
 .medi-table tr{
     line-height: 5rem;
 }
+.btn-primary {
+    background-color: var(--medi-blue-color);
+}
+
+header {
+    border-bottom: 5px solid var(--medi-blue-color) ;
+    padding-bottom: 2rem;
+}
 
 .error{
     color: red;
