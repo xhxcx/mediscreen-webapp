@@ -7,12 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
 @Controller
@@ -37,7 +35,7 @@ public class PatientController {
     }
 
     @GetMapping("/patient")
-    public String findPatientById(@RequestParam int id, Model model, RedirectAttributes redirectAttrs){
+    public String findPatientById(@RequestParam int id, @RequestParam(required = false, defaultValue = "false")boolean isEdit, Model model, RedirectAttributes redirectAttrs){
         LOGGER.info("GET /patient patientId = " + id);
         MediScreenPatient patient = patientService.findPatient(id);
         if (patient == null) {
@@ -46,6 +44,7 @@ public class PatientController {
             return "redirect:/patients";
         }
         model.addAttribute("patient", patientService.findPatient(id));
+        model.addAttribute("isEditMode", isEdit);
         return "patientInformations";
     }
 
@@ -59,14 +58,19 @@ public class PatientController {
         return "addPatientForm";
     }
 
-    @PostMapping("/addPatient")
-    public String validatePatientCreation(@ModelAttribute("newPatient") MediScreenPatient patient, RedirectAttributes redirectAttributes, Model model) {
-        LOGGER.info("POST /addPatient patient: " + patient.toString());
-        if (patientService.createPatient(patient) != null) {
-            redirectAttributes.addFlashAttribute("showSuccessAddMessage", true);
-            return "redirect:/patients";
+    @PostMapping(value={"/addPatient", "/patient"})
+    public String validatePatientSave(@ModelAttribute("patientToSave") MediScreenPatient patient, RedirectAttributes redirectAttributes, Model model, HttpServletRequest request) {
+        LOGGER.info("POST " + request.getServletPath() + " patient: " + patient.toString());
+        if (patientService.savePatient(patient) != null) {
+            if (request.getServletPath().equalsIgnoreCase("/addPatient")) {
+                redirectAttributes.addFlashAttribute("showSuccessAddMessage", true);
+                return "redirect:/patients";
+            }
+            redirectAttributes.addFlashAttribute("showSuccessUpdateMessage", true);
+            return "redirect:/patient?id=" + patient.getId();
         }
-        model.addAttribute("errorMessage", "Patient not created, please verify informations and try again");
+        model.addAttribute("newPatient", new MediScreenPatient());
+        model.addAttribute("errorMessage", "Patient not saved, please verify informations and try again");
         return "addPatientForm";
     }
 }

@@ -3,10 +3,7 @@ package com.mediscreen.webapp.proxy;
 import com.mediscreen.webapp.model.MediScreenPatient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -22,5 +19,8 @@ public interface PatientApiProxy {
 
     @PostMapping(value = "/")
     ResponseEntity<MediScreenPatient> createPatient(@Valid @RequestBody MediScreenPatient patient);
+
+    @PutMapping(value = "/{id}")
+    ResponseEntity<MediScreenPatient> updatePatient(@PathVariable("id") int id, @Valid @RequestBody MediScreenPatient patient);
 
 }

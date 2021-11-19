@@ -10,5 +10,5 @@ public interface PatientService {
 
     List<MediScreenPatient> getAllPatients();
     MediScreenPatient findPatient(int patientId);
-    MediScreenPatient createPatient(MediScreenPatient patient);
+    MediScreenPatient savePatient(MediScreenPatient patient);
 }

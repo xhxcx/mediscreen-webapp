@@ -90,20 +90,31 @@ public class PatientControllerTests {
 
     @Test
     public void validatePatientCreationShouldRedirectToPatientListTpl() throws Exception {
-        Mockito.when(patientServiceMock.createPatient(any(MediScreenPatient.class))).thenReturn(patient);
+        Mockito.when(patientServiceMock.savePatient(any(MediScreenPatient.class))).thenReturn(patient);
 
-        mockMvc.perform(post("/addPatient").flashAttr("newPatient", patient))
+        patient.setId(null);
+        mockMvc.perform(post("/addPatient").flashAttr("patientToSave", patient).servletPath("/addPatient"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/patients"));
     }
 
     @Test
     public void validatePatientCreationShouldDisplayAddForm() throws Exception {
-        Mockito.when(patientServiceMock.createPatient(any(MediScreenPatient.class))).thenReturn(null);
+        Mockito.when(patientServiceMock.savePatient(any(MediScreenPatient.class))).thenReturn(null);
 
-        mockMvc.perform(post("/addPatient").flashAttr("newPatient", patient))
+        mockMvc.perform(post("/addPatient").flashAttr("patientToSave", patient).servletPath("/addPatient"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("addPatientForm"))
                 .andExpect(model().attributeExists("errorMessage"));
+    }
+
+    @Test
+    public void validatePatientUpdateShouldRedirectToPatientInfoTplAndShowSuccessMessage() throws Exception {
+        Mockito.when(patientServiceMock.savePatient(any(MediScreenPatient.class))).thenReturn(patient);
+
+        mockMvc.perform(post("/patient").flashAttr("patientToSave", patient).servletPath("/patient"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/patient?id=" + patient.getId()))
+                .andExpect(flash().attributeExists("showSuccessUpdateMessage"));
     }
 }

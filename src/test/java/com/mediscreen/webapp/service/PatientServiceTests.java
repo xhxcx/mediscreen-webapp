@@ -62,7 +62,7 @@ public class PatientServiceTests {
     }
 
     @Test
-    public void createPatientTest(){
+    public void savePatientTest(){
         MediScreenPatient apiReturnPatient = new MediScreenPatient();
         apiReturnPatient.setId(1);
         apiReturnPatient.setFirstName("firstName");
@@ -76,16 +76,16 @@ public class PatientServiceTests {
 
         Mockito.when(patientApiProxyMock.createPatient(patient)).thenReturn(new ResponseEntity<>(apiReturnPatient, HttpStatus.CREATED));
 
-        MediScreenPatient result = patientService.createPatient(patient);
+        MediScreenPatient result = patientService.savePatient(patient);
         Assert.assertEquals(apiReturnPatient.getId(), result.getId());
     }
 
     @Test
-    public void createPatientFailTest(){
+    public void savePatientFailTest(){
         patient.setId(null);
         Mockito.when(patientApiProxyMock.createPatient(patient)).thenReturn(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
 
-        MediScreenPatient result = patientService.createPatient(patient);
+        MediScreenPatient result = patientService.savePatient(patient);
         Assert.assertNull(result);
     }
 }
