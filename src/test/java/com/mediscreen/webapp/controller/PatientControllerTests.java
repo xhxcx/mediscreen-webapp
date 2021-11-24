@@ -61,13 +61,14 @@ public class PatientControllerTests {
     }
 
     @Test
-    public void findPatientByIdShouldDisplaypatientInformationsTplAndAddToModelPatient() throws Exception {
+    public void findPatientByIdShouldDisplaypatientInformationsTplAndAddToModelPatientAndNotes() throws Exception {
         Mockito.when(patientServiceMock.findPatient(1)).thenReturn(patient);
 
         mockMvc.perform(get("/patient").param("id", String.valueOf(1)))
                 .andExpect(status().isOk())
                 .andExpect(view().name("patientInformations"))
-                .andExpect(model().attributeExists("patient"));
+                .andExpect(model().attributeExists("patient"))
+                .andExpect(model().attributeExists("notes"));
     }
 
     @Test

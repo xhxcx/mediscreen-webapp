@@ -65,6 +65,17 @@
                     <button type="submit" class="btn medi-theme">Save</button>
                 </div>
             </form>
+            <div><hr /></div>
+            <div class="container mt-4 mb-2">
+                <div class="row">
+                    <div class="col align-self-center"><p class="h4 medi-text">Notes about patient</p></div>
+                </div>
+            </div>
+            <div class="card">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" th:each="note : ${notes}" th:text="${note.note}"></li>
+                </ul>
+            </div>
         </div>
     </body>
 </html>
