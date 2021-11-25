@@ -49,10 +49,10 @@ public class NoteControllerTests {
     }
 
     @Test
-    public void showAddNoteFormShouldDisplayAddNoteFormTPLAndAddNoteToModel() throws Exception {
+    public void showAddNoteFormShouldDisplayNoteFormTPLAndAddNoteToModel() throws Exception {
         mockMvc.perform(get("/addNote").param("patientId",String.valueOf(1)))
-                .andExpect(view().name("addNoteForm"))
-                .andExpect(model().attributeExists("newNote"));
+                .andExpect(view().name("noteForm"))
+                .andExpect(model().attributeExists("currentNote"));
     }
 
     @Test
@@ -71,9 +71,17 @@ public class NoteControllerTests {
         Mockito.when(noteServiceMock.saveNote(any(MediScreenNote.class))).thenReturn(null);
 
         mockMvc.perform(post("/addNote").contentType(MediaType.APPLICATION_JSON).content(NOTE_AS_JSON))
-                .andExpect(view().name("addNoteForm"))
+                .andExpect(view().name("noteForm"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attributeExists("newNote"));
+                .andExpect(model().attributeExists("currentNote"));
+    }
+
+    @Test
+    public void showEditFormShouldDisplayNoteFormTPLAndAddNoteToEditToTheModel() throws Exception{
+        Mockito.when(noteServiceMock.findNote("noteId")).thenReturn(note);
+        mockMvc.perform(get("/note").param("noteId", "noteId"))
+                .andExpect(view().name("noteForm"))
+                .andExpect(model().attribute("currentNote", note));
     }
 
 }

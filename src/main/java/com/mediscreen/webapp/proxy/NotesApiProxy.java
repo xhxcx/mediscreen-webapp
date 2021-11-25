@@ -21,4 +21,7 @@ public interface NotesApiProxy {
 
     @PostMapping("/")
     ResponseEntity<MediScreenNote> saveNote(@Valid @RequestBody MediScreenNote note);
+
+    @PutMapping("/{id}")
+    ResponseEntity<MediScreenNote> updateNote(@Valid @RequestBody MediScreenNote noteToUpdate);
 }

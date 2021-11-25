@@ -71,4 +71,11 @@ public class NoteServiceTests {
 
         Assert.assertNull(result);
     }
+
+    @Test
+    public void findNoteTest(){
+        Mockito.when(notesApiProxyMock.findNote("noteId")).thenReturn(new ResponseEntity<>(note, HttpStatus.OK));
+
+        Assert.assertEquals(note.getId(), noteService.findNote("noteId").getId());
+    }
 }

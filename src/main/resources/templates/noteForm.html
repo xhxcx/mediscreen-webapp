@@ -18,15 +18,16 @@
                     <div class="col align-self-center"><p class="h4 medi-text">Add new note</p></div>
                 </div>
             </div>
-            <form class="container" th:action="@{/addNote}" th:object="${newNote}" method="post">
+            <form class="container" th:action="@{${currentNote.id == null ? '/addNote' : '/note'}}" th:object="${currentNote}" method="post">
                 <div class="form-group row mb-3">
                     <label for="note" class="col-sm-2 col-form-label">Note : *</label>
                     <textarea class="form-control" id="note" rows="3" th:field="*{note}" required></textarea>
                 </div>
-                <input th:type="hidden" id="patientId" name="patientId" th:value="${newNote.patientId}" class="form-control" th:field="*{patientId}" readonly>
+                <input th:type="hidden" id="patientId" name="patientId" th:value="${currentNote.patientId}" class="form-control" th:field="*{patientId}" readonly>
+                <input th:type="hidden" id="noteId" name="noteId" th:value="${currentNote.id}" class="form-control" th:field="*{id}" readonly>
                 <div class="text-center">
-                    <button type="submit" class="btn medi-theme">Add new note</button>
-                    <a class="btn btn-secondary" href="#" th:href="@{/patient(id=${newNote.patientId})}" role="button">Cancel</a>
+                    <button type="submit" class="btn medi-theme" th:text="${currentNote.id == null} ? 'Add new note' : 'Update'">Add new note</button>
+                    <a class="btn btn-secondary" href="#" th:href="@{/patient(id=${currentNote.patientId})}" role="button">Cancel</a>
                 </div>
             </form>
             <div>* required fields</div>

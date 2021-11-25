@@ -9,6 +9,7 @@ import java.util.List;
 public interface NoteService {
     List<MediScreenNote> getAll();
     List<MediScreenNote> getNotesByPatient(int patientId);
+    MediScreenNote findNote(String noteId);
     MediScreenNote saveNote(MediScreenNote noteToSave);
 
 }

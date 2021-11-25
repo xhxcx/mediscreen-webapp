@@ -26,6 +26,7 @@ public class NoteController {
 
     @GetMapping("/notes")
     public String showAllNotes(Model model) {
+        LOGGER.info("GET /notes");
         model.addAttribute("allNotesList", noteService.getAll());
         model.addAttribute("activePage", "allNotesList");
         return "allNotes";
@@ -33,10 +34,18 @@ public class NoteController {
 
     @GetMapping("/addNote")
     public String showAddNoteForm(@RequestParam int patientId, Model model){
+        LOGGER.info("GET /addNote patientId : " + patientId);
         MediScreenNote newNote = new MediScreenNote();
         newNote.setPatientId(patientId);
-        model.addAttribute("newNote", newNote);
-        return "addNoteForm";
+        model.addAttribute("currentNote", newNote);
+        return "noteForm";
+    }
+
+    @GetMapping("/note")
+    public String showEditForm(@RequestParam String noteId, Model model){
+        LOGGER.info("GET /note noteId: " + noteId);
+        model.addAttribute("currentNote", noteService.findNote(noteId));
+        return "noteForm";
     }
 
     @PostMapping(value = {"/addNote","/note"})
@@ -48,7 +57,7 @@ public class NoteController {
             return "redirect:/patient?id=" + savedNote.getPatientId();
         }
         model.addAttribute("errorMessage", "An error occurs creating the note");
-        model.addAttribute("newNote", note);
-        return "addNoteForm";
+        model.addAttribute("currentNote", note);
+        return "noteForm";
     }
 }

@@ -24,6 +24,11 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
+    public MediScreenNote findNote(String noteId) {
+        return notesApiProxy.findNote(noteId).getBody();
+    }
+
+    @Override
     public MediScreenNote saveNote(MediScreenNote noteToSave) {
         return notesApiProxy.saveNote(noteToSave).getBody();
     }
