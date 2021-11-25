@@ -22,4 +22,9 @@ public class NoteServiceImpl implements NoteService{
     public List<MediScreenNote> getNotesByPatient(int patientId) {
         return notesApiProxy.getNotesForPatientId(patientId).getBody();
     }
+
+    @Override
+    public MediScreenNote saveNote(MediScreenNote noteToSave) {
+        return notesApiProxy.saveNote(noteToSave).getBody();
+    }
 }

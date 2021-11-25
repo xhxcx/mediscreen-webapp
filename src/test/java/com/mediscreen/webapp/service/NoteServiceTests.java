@@ -53,4 +53,22 @@ public class NoteServiceTests {
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(note.getId(), result.get(0).getId());
     }
+
+    @Test
+    public void saveNoteTest(){
+        Mockito.when(notesApiProxyMock.saveNote(note)).thenReturn(new ResponseEntity<>(note,HttpStatus.CREATED));
+
+        MediScreenNote result = noteService.saveNote(note);
+
+        Assert.assertEquals(note.getId(), result.getId());
+    }
+
+    @Test
+    public void saveNoteKOTest(){
+        Mockito.when(notesApiProxyMock.saveNote(note)).thenReturn(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+
+        MediScreenNote result = noteService.saveNote(note);
+
+        Assert.assertNull(result);
+    }
 }

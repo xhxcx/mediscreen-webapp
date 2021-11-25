@@ -18,4 +18,7 @@ public interface NotesApiProxy {
 
     @GetMapping("/{id}")
     ResponseEntity<MediScreenNote> findNote(@PathVariable("id") String id);
+
+    @PostMapping("/")
+    ResponseEntity<MediScreenNote> saveNote(@Valid @RequestBody MediScreenNote note);
 }

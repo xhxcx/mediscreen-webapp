@@ -66,15 +66,20 @@
                 </div>
             </form>
             <div><hr /></div>
-            <div class="container mt-4 mb-2">
-                <div class="row">
+            <div th:if="${!isEditMode}" class="container mt-4">
+                <div class="row mb-3">
                     <div class="col align-self-center"><p class="h4 medi-text">Notes about patient</p></div>
+                    <div class="col text-align-end">
+                        <a href="#" th:href="@{/addNote(patientId=${patient.id})}">
+                            <button class="btn btn-primary btn-sm" type="submit">Add new note</button>
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item" th:each="note : ${notes}" th:text="${note.note}"></li>
-                </ul>
+                <div class="card">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:each="note : ${notes}" th:text="${note.note}"></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </body>

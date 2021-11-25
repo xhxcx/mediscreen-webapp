@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Add patient</title>
+        <link href="../static/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+        <link href="../static/css/mediscreen.css" rel="stylesheet" media="screen" th:href="@{/css/mediscreen.css}"/>
+        <script type="text/javascript" src="../static/js/bootstrap.min.js" th:href="@{/js/bootstrap.min.js}"></script>
+    </head>
+    <body>
+        <div class="container">
+            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom" th:replace="/fragments/header :: header"></header>
+            <!-- Messages center -->
+            <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}">
+            </div>
+            <div class="container mt-4 mb-2">
+                <div class="row">
+                    <div class="col align-self-center"><p class="h4 medi-text">Add new note</p></div>
+                </div>
+            </div>
+            <form class="container" th:action="@{/addNote}" th:object="${newNote}" method="post">
+                <div class="form-group row mb-3">
+                    <label for="note" class="col-sm-2 col-form-label">Note : *</label>
+                    <textarea class="form-control" id="note" rows="3" th:field="*{note}" required></textarea>
+                </div>
+                <input th:type="hidden" id="patientId" name="patientId" th:value="${newNote.patientId}" class="form-control" th:field="*{patientId}" readonly>
+                <div class="text-center">
+                    <button type="submit" class="btn medi-theme">Add new note</button>
+                    <a class="btn btn-secondary" href="#" th:href="@{/patient(id=${newNote.patientId})}" role="button">Cancel</a>
+                </div>
+            </form>
+            <div>* required fields</div>
+        </div>
+    </body>
+</html>
