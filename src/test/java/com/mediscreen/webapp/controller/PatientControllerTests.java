@@ -1,6 +1,9 @@
 package com.mediscreen.webapp.controller;
 
 import com.mediscreen.webapp.model.MediScreenPatient;
+import com.mediscreen.webapp.model.MediScreenRiskLevel;
+import com.mediscreen.webapp.service.AssessmentService;
+import com.mediscreen.webapp.service.NoteService;
 import com.mediscreen.webapp.service.PatientService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -25,6 +29,12 @@ public class PatientControllerTests {
 
     @MockBean
     private PatientService patientServiceMock;
+
+    @MockBean
+    private NoteService noteServiceMock;
+
+    @MockBean
+    private AssessmentService assessmentServiceMock;
 
     @Autowired
     private MockMvc mockMvc;
@@ -63,12 +73,15 @@ public class PatientControllerTests {
     @Test
     public void findPatientByIdShouldDisplaypatientInformationsTplAndAddToModelPatientAndNotes() throws Exception {
         Mockito.when(patientServiceMock.findPatient(1)).thenReturn(patient);
+        Mockito.when(noteServiceMock.getNotesByPatient(1)).thenReturn(new ArrayList<>());
+        Mockito.when(assessmentServiceMock.getRiskLevel(1)).thenReturn(MediScreenRiskLevel.NONE);
 
         mockMvc.perform(get("/patient").param("id", String.valueOf(1)))
                 .andExpect(status().isOk())
                 .andExpect(view().name("patientInformations"))
                 .andExpect(model().attributeExists("patient"))
-                .andExpect(model().attributeExists("notes"));
+                .andExpect(model().attributeExists("notes"))
+                .andExpect(model().attributeExists("riskLevel"));
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.mediscreen.webapp.controller;
 
 import com.mediscreen.webapp.model.MediScreenPatient;
+import com.mediscreen.webapp.service.AssessmentService;
 import com.mediscreen.webapp.service.NoteService;
 import com.mediscreen.webapp.service.PatientService;
 import org.slf4j.Logger;
@@ -24,6 +25,9 @@ public class PatientController {
 
     @Autowired
     private NoteService noteService;
+
+    @Autowired
+    private AssessmentService assessmentService;
 
     @GetMapping("/")
     public String viewHome(){
@@ -50,6 +54,7 @@ public class PatientController {
         model.addAttribute("patient", patientService.findPatient(id));
         model.addAttribute("isEditMode", isEdit);
         model.addAttribute("notes", noteService.getNotesByPatient(id));
+        model.addAttribute("riskLevel", assessmentService.getRiskLevel(id));
         return "patientInformations";
     }
 
