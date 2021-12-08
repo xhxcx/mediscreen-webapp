@@ -9,7 +9,7 @@
     </head>
     <body>
         <div class="container">
-            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom" th:replace="/fragments/header :: header"></header>
+            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom" th:replace="fragments/header :: header"></header>
             <!-- Messages center -->
             <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}">
             </div>

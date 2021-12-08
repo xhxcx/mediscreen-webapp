@@ -9,7 +9,7 @@
     </head>
     <body>
         <div class="container">
-            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom" th:replace="/fragments/header :: header"></header>
+            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom" th:replace="fragments/header :: header"></header>
             <div th:if="${showSuccessUpdateMessage}" class="alert alert-success" role="alert">
                 Patient updated successfully
             </div>
