@@ -1,0 +1,38 @@
+version: "3"
+services:
+
+  patientApi:
+    image: patientapiimage
+    ports:
+      - "8081:8081"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+
+  notesApi:
+    image: notesapiimage
+    ports:
+      - "8082:8082"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+
+  assessmentApi:
+    image: assessmentapiimage
+    depends_on:
+      - patientApi
+      - notesApi
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    ports:
+      - "8083:8083"
+
+  webapp:
+    image: webappimage
+    
+    depends_on:
+      - patientApi
+      - notesApi
+      - assessmentApi
+    ports:
+      - "8080:8080"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"

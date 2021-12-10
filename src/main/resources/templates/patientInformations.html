@@ -64,6 +64,7 @@
                     <input th:type="hidden" id="patientId" name="patientId" th:value="${patient.id}" class="form-control" th:field="*{id}" readonly>
                     <div th:if="${isEditMode == true}" class="text-center">
                         <button type="submit" class="btn medi-theme">Save</button>
+                        <a class="btn btn-secondary" href="#" th:href="@{/patient(id=${patient.id}, isEdit=false)}" role="button">Cancel</a>
                     </div>
                 </form>
                 <div class="col-2 align-self-center alert" th:classappend="(${riskLevel == riskLevel.IN_DANGER or riskLevel == riskLevel.EARLY_ONSET}) ? 'alert-danger'
